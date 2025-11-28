@@ -20,7 +20,7 @@ class TaskService {
       }
 
       const params = {
-        fields: [
+fields: [
           {"field": {"Name": "Name"}},
           {"field": {"Name": "title_c"}},
           {"field": {"Name": "description_c"}},
@@ -28,7 +28,11 @@ class TaskService {
           {"field": {"Name": "farm_id_c"}},
           {"field": {"Name": "crop_id_c"}},
           {"field": {"Name": "priority_c"}},
-          {"field": {"Name": "completed_c"}}
+          {"field": {"Name": "completed_c"}},
+          {"field": {"Name": "CreatedOn"}},
+          {"field": {"Name": "CreatedBy"}},
+          {"field": {"Name": "ModifiedOn"}},
+          {"field": {"Name": "ModifiedBy"}}
         ]
       };
 
@@ -61,7 +65,7 @@ class TaskService {
       }
 
       const params = {
-        fields: [
+fields: [
           {"field": {"Name": "Name"}},
           {"field": {"Name": "title_c"}},
           {"field": {"Name": "description_c"}},
@@ -69,7 +73,11 @@ class TaskService {
           {"field": {"Name": "farm_id_c"}},
           {"field": {"Name": "crop_id_c"}},
           {"field": {"Name": "priority_c"}},
-          {"field": {"Name": "completed_c"}}
+          {"field": {"Name": "completed_c"}},
+          {"field": {"Name": "CreatedOn"}},
+          {"field": {"Name": "CreatedBy"}},
+          {"field": {"Name": "ModifiedOn"}},
+          {"field": {"Name": "ModifiedBy"}}
         ]
       };
 
@@ -96,7 +104,7 @@ class TaskService {
       }
 
       const params = {
-        fields: [
+fields: [
           {"field": {"Name": "Name"}},
           {"field": {"Name": "title_c"}},
           {"field": {"Name": "description_c"}},
@@ -104,7 +112,11 @@ class TaskService {
           {"field": {"Name": "farm_id_c"}},
           {"field": {"Name": "crop_id_c"}},
           {"field": {"Name": "priority_c"}},
-          {"field": {"Name": "completed_c"}}
+          {"field": {"Name": "completed_c"}},
+          {"field": {"Name": "CreatedOn"}},
+          {"field": {"Name": "CreatedBy"}},
+          {"field": {"Name": "ModifiedOn"}},
+          {"field": {"Name": "ModifiedBy"}}
         ],
         where: [{
           FieldName: "farm_id_c",
@@ -143,7 +155,7 @@ class TaskService {
       const futureDateStr = futureDate.toISOString().slice(0, 10);
 
       const params = {
-        fields: [
+fields: [
           {"field": {"Name": "Name"}},
           {"field": {"Name": "title_c"}},
           {"field": {"Name": "description_c"}},
@@ -151,7 +163,11 @@ class TaskService {
           {"field": {"Name": "farm_id_c"}},
           {"field": {"Name": "crop_id_c"}},
           {"field": {"Name": "priority_c"}},
-          {"field": {"Name": "completed_c"}}
+          {"field": {"Name": "completed_c"}},
+          {"field": {"Name": "CreatedOn"}},
+          {"field": {"Name": "CreatedBy"}},
+          {"field": {"Name": "ModifiedOn"}},
+          {"field": {"Name": "ModifiedBy"}}
         ],
         where: [
           {
@@ -198,8 +214,9 @@ class TaskService {
         throw new Error("ApperClient not initialized");
       }
 
-      const params = {
+const params = {
         records: [{
+          Name: taskData.name || "",
           title_c: taskData.title,
           description_c: taskData.description || "",
           due_date_c: taskData.dueDate,
@@ -251,9 +268,10 @@ class TaskService {
         throw new Error("ApperClient not initialized");
       }
 
-      const params = {
+const params = {
         records: [{
           Id: id,
+          Name: taskData.name || "",
           title_c: taskData.title,
           description_c: taskData.description || "",
           due_date_c: taskData.dueDate,

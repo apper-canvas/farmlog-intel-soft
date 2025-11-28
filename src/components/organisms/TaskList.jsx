@@ -294,6 +294,13 @@ key={task.Id}
                     </div>
                   </div>
 
+{/* Task Name */}
+                  {task.Name && (
+                    <div className="text-sm text-gray-600 mb-1">
+                      <span className="font-medium">Name:</span> {task.Name}
+                    </div>
+                  )}
+
                   {/* Task Details */}
                   <div className="flex items-center gap-6 text-sm text-gray-600">
                     <div className="flex items-center gap-1">
@@ -310,6 +317,30 @@ key={task.Id}
                         {getCropName(task.crop_id_c?.Id || task.crop_id_c)}
                       </div>
                     )}
+                  </div>
+
+                  {/* Metadata */}
+                  <div className="mt-3 pt-3 border-t border-gray-100">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-gray-500">
+                      {task.CreatedOn && (
+                        <div className="flex items-center gap-1">
+                          <ApperIcon name="Plus" className="w-3 h-3" />
+                          <span>Created: {formatRelativeDate(task.CreatedOn)}</span>
+                          {task.CreatedBy?.Name && (
+                            <span className="text-gray-400">by {task.CreatedBy.Name}</span>
+                          )}
+                        </div>
+                      )}
+                      {task.ModifiedOn && (
+                        <div className="flex items-center gap-1">
+                          <ApperIcon name="Edit2" className="w-3 h-3" />
+                          <span>Updated: {formatRelativeDate(task.ModifiedOn)}</span>
+                          {task.ModifiedBy?.Name && (
+                            <span className="text-gray-400">by {task.ModifiedBy.Name}</span>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
 

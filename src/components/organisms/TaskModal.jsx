@@ -21,6 +21,7 @@ const TaskModal = ({ isOpen, onClose, onSave, task, farms, crops }) => {
   useEffect(() => {
 if (task) {
       setFormData({
+        name: task.Name || "",
         title: task.title_c || "",
         description: task.description_c || "",
         dueDate: task.due_date_c || "",
@@ -30,6 +31,7 @@ if (task) {
       });
     } else {
       setFormData({
+        name: "",
         title: "",
         description: "",
         dueDate: "",

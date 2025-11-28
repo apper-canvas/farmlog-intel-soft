@@ -20,13 +20,17 @@ class ExpenseService {
       }
 
       const params = {
-        fields: [
+fields: [
           {"field": {"Name": "Name"}},
           {"field": {"Name": "amount_c"}},
           {"field": {"Name": "category_c"}},
           {"field": {"Name": "date_c"}},
           {"field": {"Name": "farm_id_c"}},
-          {"field": {"Name": "notes_c"}}
+          {"field": {"Name": "notes_c"}},
+          {"field": {"Name": "CreatedOn"}},
+          {"field": {"Name": "CreatedBy"}},
+          {"field": {"Name": "ModifiedOn"}},
+          {"field": {"Name": "ModifiedBy"}}
         ]
       };
 
@@ -60,12 +64,16 @@ class ExpenseService {
 
       const params = {
         fields: [
-          {"field": {"Name": "Name"}},
+{"field": {"Name": "Name"}},
           {"field": {"Name": "amount_c"}},
           {"field": {"Name": "category_c"}},
           {"field": {"Name": "date_c"}},
           {"field": {"Name": "farm_id_c"}},
-          {"field": {"Name": "notes_c"}}
+          {"field": {"Name": "notes_c"}},
+          {"field": {"Name": "CreatedOn"}},
+          {"field": {"Name": "CreatedBy"}},
+          {"field": {"Name": "ModifiedOn"}},
+          {"field": {"Name": "ModifiedBy"}}
         ]
       };
 
@@ -93,12 +101,16 @@ class ExpenseService {
 
       const params = {
         fields: [
-          {"field": {"Name": "Name"}},
+{"field": {"Name": "Name"}},
           {"field": {"Name": "amount_c"}},
           {"field": {"Name": "category_c"}},
           {"field": {"Name": "date_c"}},
           {"field": {"Name": "farm_id_c"}},
-          {"field": {"Name": "notes_c"}}
+          {"field": {"Name": "notes_c"}},
+          {"field": {"Name": "CreatedOn"}},
+          {"field": {"Name": "CreatedBy"}},
+          {"field": {"Name": "ModifiedOn"}},
+          {"field": {"Name": "ModifiedBy"}}
         ],
         where: [{
           FieldName: "farm_id_c",

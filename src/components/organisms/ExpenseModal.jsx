@@ -20,7 +20,8 @@ const ExpenseModal = ({ isOpen, onClose, onSave, expense, farms }) => {
 
   useEffect(() => {
 if (expense) {
-      setFormData({
+setFormData({
+        name: expense.Name || "",
         amount: expense.amount_c?.toString() || "",
         category: expense.category_c || "",
         date: expense.date_c || "",
@@ -28,7 +29,8 @@ if (expense) {
         notes: expense.notes_c || ""
       });
     } else {
-      setFormData({
+setFormData({
+        name: "",
         amount: "",
         category: "",
         date: new Date().toISOString().split("T")[0],
@@ -69,7 +71,8 @@ if (expense) {
       return;
     }
 
-    const expenseData = {
+const expenseData = {
+      name: formData.name.trim(),
       amount: parseFloat(formData.amount),
       category: formData.category,
       date: formData.date,
@@ -121,7 +124,43 @@ if (expense) {
             </div>
 
             {/* Form Fields */}
-            <div className="space-y-4">
+<div className="space-y-4">
+              <Input
+                label="Name"
+                type="text"
+                required
+                value={formData.name}
+                onChange={(e) => handleInputChange("name", e.target.value)}
+                error={errors.name}
+                placeholder="Enter expense name"
+              />
+
+              {expense && (
+                <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+                  <h4 className="font-medium text-gray-700 mb-2">Record Information</h4>
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <span className="text-gray-600">Created:</span>
+                      <div className="font-medium">
+                        {expense.CreatedOn && new Date(expense.CreatedOn).toLocaleString()}
+                      </div>
+                      <div className="text-gray-600">
+                        by {expense.CreatedBy?.Name || 'System'}
+                      </div>
+                    </div>
+                    <div>
+                      <span className="text-gray-600">Modified:</span>
+                      <div className="font-medium">
+                        {expense.ModifiedOn && new Date(expense.ModifiedOn).toLocaleString()}
+                      </div>
+                      <div className="text-gray-600">
+                        by {expense.ModifiedBy?.Name || 'System'}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <Input
                 label="Amount"
                 type="number"

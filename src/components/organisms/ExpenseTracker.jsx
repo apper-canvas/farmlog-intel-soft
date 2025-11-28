@@ -300,11 +300,15 @@ filteredExpenses.forEach(expense => {
 
                 {/* Expense Details */}
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
                     <div>
-                      <h4 className="font-medium text-gray-900">{expense.category_c}</h4>
-                      <div className="flex items-center gap-4 text-sm text-gray-600 mt-1">
+                      <h4 className="font-medium text-gray-900">{expense.Name || expense.category_c}</h4>
+                      <p className="text-sm text-gray-600">{expense.category_c}</p>
+                      <div className="flex items-center gap-4 text-xs text-gray-500 mt-1">
                         <span>{formatDate(expense.date_c)}</span>
+                        {expense.CreatedOn && (
+                          <span>Created {formatDate(expense.CreatedOn)}</span>
+                        )}
                         <span className="flex items-center gap-1">
                           <ApperIcon name="MapPin" className="w-3.5 h-3.5" />
                           {getFarmName(expense.farm_id_c?.Id || expense.farm_id_c)}

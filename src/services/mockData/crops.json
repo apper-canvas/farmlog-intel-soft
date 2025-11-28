@@ -1,0 +1,52 @@
+[
+  {
+    "Id": 1,
+    "farmId": 1,
+    "variety": "Heirloom Tomatoes",
+    "plantingDate": "2024-03-15",
+    "expectedHarvest": "2024-07-15",
+    "field": "North Field A",
+    "status": "growing",
+    "notes": "Organic variety, requires weekly watering"
+  },
+  {
+    "Id": 2,
+    "farmId": 1,
+    "variety": "Sweet Corn",
+    "plantingDate": "2024-04-01",
+    "expectedHarvest": "2024-08-01",
+    "field": "South Field B",
+    "status": "planted",
+    "notes": "Silver Queen variety"
+  },
+  {
+    "Id": 3,
+    "farmId": 2,
+    "variety": "Strawberries",
+    "plantingDate": "2024-02-28",
+    "expectedHarvest": "2024-06-15",
+    "field": "Greenhouse 1",
+    "status": "growing",
+    "notes": "Day-neutral variety for extended harvest"
+  },
+  {
+    "Id": 4,
+    "farmId": 2,
+    "variety": "Bell Peppers",
+    "plantingDate": "2024-03-20",
+    "expectedHarvest": "2024-08-20",
+    "field": "Row 5-8",
+    "status": "growing",
+    "notes": "Mixed colors - red, yellow, green"
+  },
+  {
+    "Id": 5,
+    "farmId": 3,
+    "variety": "Winter Wheat",
+    "plantingDate": "2023-10-15",
+    "expectedHarvest": "2024-06-30",
+    "field": "Main Field",
+    "status": "harvested",
+    "notes": "Good yield this season"
+  }
+]

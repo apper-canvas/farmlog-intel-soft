@@ -1,0 +1,57 @@
+[
+  {
+    "Id": 1,
+    "title": "Water tomatoes",
+    "description": "Deep watering for heirloom tomato plants in North Field A",
+    "dueDate": "2024-04-15",
+    "farmId": 1,
+    "cropId": 1,
+    "completed": false,
+    "priority": "high",
+    "createdAt": "2024-04-12T08:00:00Z"
+  },
+  {
+    "Id": 2,
+    "title": "Apply fertilizer to corn",
+    "description": "Nitrogen-rich fertilizer for sweet corn rows",
+    "dueDate": "2024-04-18",
+    "farmId": 1,
+    "cropId": 2,
+    "completed": false,
+    "priority": "medium",
+    "createdAt": "2024-04-10T09:00:00Z"
+  },
+  {
+    "Id": 3,
+    "title": "Harvest strawberries",
+    "description": "Pick ripe strawberries from greenhouse beds",
+    "dueDate": "2024-04-14",
+    "farmId": 2,
+    "cropId": 3,
+    "completed": true,
+    "priority": "high",
+    "createdAt": "2024-04-13T07:00:00Z"
+  },
+  {
+    "Id": 4,
+    "title": "Pest inspection",
+    "description": "Check bell pepper plants for aphids and other pests",
+    "dueDate": "2024-04-16",
+    "farmId": 2,
+    "cropId": 4,
+    "completed": false,
+    "priority": "medium",
+    "createdAt": "2024-04-11T14:00:00Z"
+  },
+  {
+    "Id": 5,
+    "title": "Equipment maintenance",
+    "description": "Service tractor and irrigation equipment",
+    "dueDate": "2024-04-20",
+    "farmId": 1,
+    "cropId": null,
+    "completed": false,
+    "priority": "low",
+    "createdAt": "2024-04-08T16:00:00Z"
+  }
+]

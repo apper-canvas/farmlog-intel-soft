@@ -1,0 +1,56 @@
+[
+  {
+    "Id": 1,
+    "amount": 245.50,
+    "category": "Seeds",
+    "date": "2024-03-15",
+    "farmId": 1,
+    "notes": "Heirloom tomato seeds and sweet corn",
+    "createdAt": "2024-03-15T10:30:00Z"
+  },
+  {
+    "Id": 2,
+    "amount": 180.00,
+    "category": "Fertilizer",
+    "date": "2024-03-20",
+    "farmId": 2,
+    "notes": "Organic compost and nitrogen fertilizer",
+    "createdAt": "2024-03-20T14:15:00Z"
+  },
+  {
+    "Id": 3,
+    "amount": 95.75,
+    "category": "Equipment",
+    "date": "2024-04-02",
+    "farmId": 1,
+    "notes": "Replacement sprinkler heads",
+    "createdAt": "2024-04-02T11:45:00Z"
+  },
+  {
+    "Id": 4,
+    "amount": 320.00,
+    "category": "Labor",
+    "date": "2024-04-05",
+    "farmId": 2,
+    "notes": "Seasonal planting assistance - 2 workers x 8 hours",
+    "createdAt": "2024-04-05T09:00:00Z"
+  },
+  {
+    "Id": 5,
+    "amount": 75.25,
+    "category": "Seeds",
+    "date": "2024-04-08",
+    "farmId": 3,
+    "notes": "Bell pepper seedlings",
+    "createdAt": "2024-04-08T13:20:00Z"
+  },
+  {
+    "Id": 6,
+    "amount": 450.00,
+    "category": "Equipment",
+    "date": "2024-04-10",
+    "farmId": 1,
+    "notes": "Tractor maintenance and oil change",
+    "createdAt": "2024-04-10T16:30:00Z"
+  }
+]

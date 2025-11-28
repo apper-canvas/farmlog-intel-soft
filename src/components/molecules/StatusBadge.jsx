@@ -18,15 +18,25 @@ const StatusBadge = ({ status, type = "crop" }) => {
     }
     
     if (type === "task") {
-      switch (status) {
+switch (status) {
         case "completed":
+        case "Completed":
           return { variant: "success", icon: "CheckCircle", text: "Completed" };
+        case "inprogress":
+        case "InProgress":
+          return { variant: "info", icon: "Play", text: "In Progress" };
+        case "blocked":
+        case "Blocked":
+          return { variant: "error", icon: "XCircle", text: "Blocked" };
+        case "open":
+        case "Open":
+          return { variant: "default", icon: "Circle", text: "Open" };
         case "overdue":
           return { variant: "error", icon: "AlertTriangle", text: "Overdue" };
         case "due-soon":
           return { variant: "warning", icon: "Clock", text: "Due Soon" };
         default:
-          return { variant: "default", icon: "Circle", text: "Pending" };
+          return { variant: "default", icon: "Circle", text: "Open" };
       }
     }
 

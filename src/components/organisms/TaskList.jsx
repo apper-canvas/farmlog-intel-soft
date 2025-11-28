@@ -68,13 +68,17 @@ filtered = filtered.filter(task =>
       );
     }
 
-    if (filters.status) {
-      if (filters.status === "completed") {
-        filtered = filtered.filter(task => task.completed_c);
-      } else if (filters.status === "pending") {
-        filtered = filtered.filter(task => !task.completed_c);
+if (filters.status) {
+      if (filters.status === "Open") {
+        filtered = filtered.filter(task => task.status_c === "Open");
+      } else if (filters.status === "InProgress") {
+        filtered = filtered.filter(task => task.status_c === "InProgress");
+      } else if (filters.status === "Completed") {
+        filtered = filtered.filter(task => task.status_c === "Completed");
+      } else if (filters.status === "Blocked") {
+        filtered = filtered.filter(task => task.status_c === "Blocked");
       } else if (filters.status === "overdue") {
-        filtered = filtered.filter(task => !task.completed_c && isOverdue(task.due_date_c));
+        filtered = filtered.filter(task => task.status_c !== "Completed" && isOverdue(task.due_date_c));
       } else if (filters.status === "due-soon") {
         filtered = filtered.filter(task => !task.completed_c && isDueSoon(task.due_date_c));
       }
@@ -161,10 +165,15 @@ if (!cropId) return null;
   };
 
 const getTaskStatus = (task) => {
+    // Use the actual status_c field from database
+    if (task.status_c) {
+      return task.status_c.toLowerCase();
+    }
+    // Fallback logic for backward compatibility
     if (task.completed_c) return "completed";
     if (isOverdue(task.due_date_c)) return "overdue";
     if (isDueSoon(task.due_date_c)) return "due-soon";
-    return "pending";
+    return "open";
   };
 
   if (loading) return <Loading text="Loading tasks..." />;
@@ -200,14 +209,16 @@ const getTaskStatus = (task) => {
             ))}
           </Select>
 
-          <Select
+<Select
             label="Filter by Status"
             value={filters.status}
             onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
           >
             <option value="">All Status</option>
-            <option value="pending">Pending</option>
-            <option value="completed">Completed</option>
+            <option value="Open">Open</option>
+            <option value="InProgress">In Progress</option>
+            <option value="Completed">Completed</option>
+            <option value="Blocked">Blocked</option>
             <option value="overdue">Overdue</option>
             <option value="due-soon">Due Soon</option>
           </Select>

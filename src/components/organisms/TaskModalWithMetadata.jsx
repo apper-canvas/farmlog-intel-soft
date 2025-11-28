@@ -10,14 +10,15 @@ import farmService from "@/services/api/farmService";
 import cropService from "@/services/api/cropService";
 
 function TaskModalWithMetadata({ isOpen, onClose, task, onSubmit }) {
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
     name: "",
     title: "",
     description: "",
     dueDate: "",
     farmId: "",
     cropId: "",
-    priority: "medium"
+    priority: "medium",
+    status: "Open"
   });
   
   const [farms, setFarms] = useState([]);
@@ -26,24 +27,26 @@ function TaskModalWithMetadata({ isOpen, onClose, task, onSubmit }) {
 
   useEffect(() => {
     if (task) {
-      setFormData({
+setFormData({
         name: task.Name || "",
         title: task.title_c || "",
         description: task.description_c || "",
         dueDate: task.due_date_c || "",
         farmId: task.farm_id_c?.Id?.toString() || task.farm_id_c?.toString() || "",
         cropId: task.crop_id_c?.Id?.toString() || task.crop_id_c?.toString() || "",
-        priority: task.priority_c || "medium"
+        priority: task.priority_c || "medium",
+        status: task.status_c || "Open"
       });
     } else {
       setFormData({
-        name: "",
+name: "",
         title: "",
         description: "",
         dueDate: "",
         farmId: "",
         cropId: "",
-        priority: "medium"
+        priority: "medium",
+        status: "Open"
       });
     }
   }, [task]);
@@ -214,19 +217,37 @@ function TaskModalWithMetadata({ isOpen, onClose, task, onSubmit }) {
             </Select>
           </div>
 
-          {/* Priority */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Priority
-            </label>
-            <Select
-              value={formData.priority}
-              onChange={(e) => handleInputChange("priority", e.target.value)}
-            >
-              <option value="low">Low</option>
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
-            </Select>
+<div className="grid grid-cols-2 gap-4">
+            {/* Priority */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Priority
+              </label>
+              <Select
+                value={formData.priority}
+                onChange={(e) => handleInputChange("priority", e.target.value)}
+              >
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+              </Select>
+            </div>
+
+            {/* Status */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Status
+              </label>
+              <Select
+                value={formData.status}
+                onChange={(e) => handleInputChange("status", e.target.value)}
+              >
+                <option value="Open">Open</option>
+                <option value="InProgress">In Progress</option>
+                <option value="Completed">Completed</option>
+                <option value="Blocked">Blocked</option>
+              </Select>
+            </div>
           </div>
 
           {/* Task Metadata - Only show for existing tasks */}

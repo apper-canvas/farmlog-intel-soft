@@ -7,37 +7,40 @@ import Select from "@/components/atoms/Select";
 import Textarea from "@/components/atoms/Textarea";
 
 const TaskModal = ({ isOpen, onClose, onSave, task, farms, crops }) => {
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
     title: "",
     description: "",
     dueDate: "",
     farmId: "",
     cropId: "",
-    priority: "medium"
+    priority: "medium",
+    status: "Open"
   });
   const [errors, setErrors] = useState({});
   const [filteredCrops, setFilteredCrops] = useState([]);
 
   useEffect(() => {
 if (task) {
-      setFormData({
+setFormData({
         name: task.Name || "",
         title: task.title_c || "",
         description: task.description_c || "",
         dueDate: task.due_date_c || "",
         farmId: task.farm_id_c?.Id?.toString() || task.farm_id_c?.toString() || "",
         cropId: task.crop_id_c?.Id?.toString() || task.crop_id_c?.toString() || "",
-        priority: task.priority_c || "medium"
+        priority: task.priority_c || "medium",
+        status: task.status_c || "Open"
       });
     } else {
       setFormData({
-        name: "",
+name: "",
         title: "",
         description: "",
         dueDate: "",
         farmId: "",
         cropId: "",
-        priority: "medium"
+        priority: "medium",
+        status: "Open"
       });
     }
     setErrors({});
@@ -79,14 +82,14 @@ if (formData.farmId && crops) {
     if (!validateForm()) {
       return;
     }
-
-    const taskData = {
+const taskData = {
       title: formData.title.trim(),
       description: formData.description.trim(),
       dueDate: formData.dueDate,
       farmId: parseInt(formData.farmId),
       cropId: formData.cropId ? parseInt(formData.cropId) : null,
-      priority: formData.priority
+      priority: formData.priority,
+      status: formData.status
     };
 
     onSave(taskData);
@@ -157,7 +160,7 @@ if (formData.farmId && crops) {
                 rows={3}
               />
 
-              <div className="grid grid-cols-2 gap-3">
+<div className="grid grid-cols-3 gap-3">
                 <Input
                   label="Due Date"
                   type="date"
@@ -176,6 +179,18 @@ if (formData.farmId && crops) {
                   <option value="low">Low</option>
                   <option value="medium">Medium</option>
                   <option value="high">High</option>
+                </Select>
+
+                <Select
+                  label="Status"
+                  required
+                  value={formData.status}
+                  onChange={(e) => handleInputChange("status", e.target.value)}
+                >
+                  <option value="Open">Open</option>
+                  <option value="InProgress">In Progress</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Blocked">Blocked</option>
                 </Select>
               </div>
 

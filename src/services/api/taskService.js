@@ -1,5 +1,6 @@
-import { getApperClient } from "@/services/apperClient";
 import { toast } from "react-toastify";
+import React from "react";
+import { getApperClient } from "@/services/apperClient";
 
 class TaskService {
   constructor() {
@@ -19,8 +20,8 @@ class TaskService {
         return [];
       }
 
-      const params = {
-fields: [
+const params = {
+        fields: [
           {"field": {"Name": "Name"}},
           {"field": {"Name": "title_c"}},
           {"field": {"Name": "description_c"}},
@@ -29,6 +30,7 @@ fields: [
           {"field": {"Name": "crop_id_c"}},
           {"field": {"Name": "priority_c"}},
           {"field": {"Name": "completed_c"}},
+          {"field": {"Name": "status_c"}},
           {"field": {"Name": "CreatedOn"}},
           {"field": {"Name": "CreatedBy"}},
           {"field": {"Name": "ModifiedOn"}},
@@ -64,8 +66,8 @@ fields: [
         return null;
       }
 
-      const params = {
-fields: [
+const params = {
+        fields: [
           {"field": {"Name": "Name"}},
           {"field": {"Name": "title_c"}},
           {"field": {"Name": "description_c"}},
@@ -74,6 +76,7 @@ fields: [
           {"field": {"Name": "crop_id_c"}},
           {"field": {"Name": "priority_c"}},
           {"field": {"Name": "completed_c"}},
+          {"field": {"Name": "status_c"}},
           {"field": {"Name": "CreatedOn"}},
           {"field": {"Name": "CreatedBy"}},
           {"field": {"Name": "ModifiedOn"}},
@@ -103,8 +106,8 @@ fields: [
         return [];
       }
 
-      const params = {
-fields: [
+const params = {
+        fields: [
           {"field": {"Name": "Name"}},
           {"field": {"Name": "title_c"}},
           {"field": {"Name": "description_c"}},
@@ -113,6 +116,7 @@ fields: [
           {"field": {"Name": "crop_id_c"}},
           {"field": {"Name": "priority_c"}},
           {"field": {"Name": "completed_c"}},
+          {"field": {"Name": "status_c"}},
           {"field": {"Name": "CreatedOn"}},
           {"field": {"Name": "CreatedBy"}},
           {"field": {"Name": "ModifiedOn"}},
@@ -154,8 +158,8 @@ fields: [
       futureDate.setDate(futureDate.getDate() + days);
       const futureDateStr = futureDate.toISOString().slice(0, 10);
 
-      const params = {
-fields: [
+const params = {
+        fields: [
           {"field": {"Name": "Name"}},
           {"field": {"Name": "title_c"}},
           {"field": {"Name": "description_c"}},
@@ -164,6 +168,7 @@ fields: [
           {"field": {"Name": "crop_id_c"}},
           {"field": {"Name": "priority_c"}},
           {"field": {"Name": "completed_c"}},
+          {"field": {"Name": "status_c"}},
           {"field": {"Name": "CreatedOn"}},
           {"field": {"Name": "CreatedBy"}},
           {"field": {"Name": "ModifiedOn"}},
@@ -223,7 +228,8 @@ const params = {
           farm_id_c: parseInt(taskData.farmId),
           crop_id_c: taskData.cropId ? parseInt(taskData.cropId) : null,
           priority_c: taskData.priority || "medium",
-          completed_c: false
+          completed_c: false,
+          status_c: taskData.status || "Open"
         }]
       };
 
@@ -278,7 +284,8 @@ const params = {
           farm_id_c: parseInt(taskData.farmId),
           crop_id_c: taskData.cropId ? parseInt(taskData.cropId) : null,
           priority_c: taskData.priority || "medium",
-          completed_c: taskData.completed !== undefined ? taskData.completed : false
+          completed_c: taskData.completed !== undefined ? taskData.completed : false,
+          status_c: taskData.status || "Open"
         }]
       };
 

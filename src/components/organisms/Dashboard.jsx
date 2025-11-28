@@ -45,12 +45,12 @@ const Dashboard = () => {
       // Calculate monthly expenses
       const currentMonth = new Date().getMonth() + 1;
       const currentYear = new Date().getFullYear();
-      const monthlyExpenses = allExpenses
+const monthlyExpenses = allExpenses
         .filter(expense => {
-          const expenseDate = new Date(expense.date);
+          const expenseDate = new Date(expense.date_c);
           return expenseDate.getMonth() + 1 === currentMonth && expenseDate.getFullYear() === currentYear;
         })
-        .reduce((total, expense) => total + expense.amount, 0);
+        .reduce((total, expense) => total + expense.amount_c, 0);
 
       setDashboardData({
         farms,
@@ -66,10 +66,10 @@ const Dashboard = () => {
     }
   };
 
-  const getTaskStatus = (task) => {
-    if (task.completed) return "completed";
-    if (isOverdue(task.dueDate)) return "overdue";
-    if (isDueSoon(task.dueDate)) return "due-soon";
+const getTaskStatus = (task) => {
+    if (task.completed_c) return "completed";
+    if (isOverdue(task.due_date_c)) return "overdue";
+    if (isDueSoon(task.due_date_c)) return "due-soon";
     return "pending";
   };
 
@@ -77,15 +77,15 @@ const Dashboard = () => {
     return dashboardData.crops.filter(crop => crop.status !== "harvested").length;
   };
 
-  const getFarmName = (farmId) => {
+const getFarmName = (farmId) => {
     const farm = dashboardData.farms.find(f => f.Id === farmId);
-    return farm ? farm.name : "Unknown Farm";
+    return farm ? farm.Name : "Unknown Farm";
   };
 
   const getCropName = (cropId) => {
-    if (!cropId) return null;
+if (!cropId) return null;
     const crop = dashboardData.crops.find(c => c.Id === cropId);
-    return crop ? crop.variety : "Unknown Crop";
+    return crop ? crop.variety_c : "Unknown Crop";
   };
 
   if (loading) return <Loading text="Loading dashboard..." />;
@@ -187,7 +187,7 @@ const Dashboard = () => {
               />
             ) : (
               <div className="space-y-3">
-                {upcomingTasks.slice(0, 5).map((task) => (
+{upcomingTasks.slice(0, 5).map((task) => (
                   <div
                     key={task.Id}
                     className="flex items-center gap-3 p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors"
@@ -196,24 +196,24 @@ const Dashboard = () => {
                     
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <h4 className="font-medium text-gray-900 truncate">{task.title}</h4>
+                        <h4 className="font-medium text-gray-900 truncate">{task.title_c}</h4>
                         <StatusBadge status={getTaskStatus(task)} type="task" />
-                        <PriorityBadge priority={task.priority} />
+                        <PriorityBadge priority={task.priority_c} />
                       </div>
                       
                       <div className="flex items-center gap-4 text-sm text-gray-600">
                         <span className="flex items-center gap-1">
                           <ApperIcon name="Calendar" className="w-3.5 h-3.5" />
-                          {formatRelativeDate(task.dueDate)}
+                          {formatRelativeDate(task.due_date_c)}
                         </span>
                         <span className="flex items-center gap-1">
                           <ApperIcon name="MapPin" className="w-3.5 h-3.5" />
-                          {getFarmName(task.farmId)}
+                          {getFarmName(task.farm_id_c?.Id || task.farm_id_c)}
                         </span>
-                        {task.cropId && (
+                        {task.crop_id_c && (
                           <span className="flex items-center gap-1">
                             <ApperIcon name="Sprout" className="w-3.5 h-3.5" />
-                            {getCropName(task.cropId)}
+                            {getCropName(task.crop_id_c?.Id || task.crop_id_c)}
                           </span>
                         )}
                       </div>

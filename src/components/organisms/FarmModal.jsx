@@ -15,12 +15,12 @@ const FarmModal = ({ isOpen, onClose, onSave, farm }) => {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (farm) {
+if (farm) {
       setFormData({
-        name: farm.name || "",
-        location: farm.location || "",
-        size: farm.size?.toString() || "",
-        unit: farm.unit || "acres"
+        name: farm.Name || "",
+        location: farm.location_c || "",
+        size: farm.size_c?.toString() || "",
+        unit: farm.unit_c || "acres"
       });
     } else {
       setFormData({

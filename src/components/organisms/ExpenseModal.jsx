@@ -19,13 +19,13 @@ const ExpenseModal = ({ isOpen, onClose, onSave, expense, farms }) => {
   const expenseCategories = ["Seeds", "Fertilizer", "Equipment", "Labor", "Maintenance", "Other"];
 
   useEffect(() => {
-    if (expense) {
+if (expense) {
       setFormData({
-        amount: expense.amount?.toString() || "",
-        category: expense.category || "",
-        date: expense.date || "",
-        farmId: expense.farmId?.toString() || "",
-        notes: expense.notes || ""
+        amount: expense.amount_c?.toString() || "",
+        category: expense.category_c || "",
+        date: expense.date_c || "",
+        farmId: expense.farm_id_c?.Id?.toString() || expense.farm_id_c?.toString() || "",
+        notes: expense.notes_c || ""
       });
     } else {
       setFormData({
@@ -168,9 +168,9 @@ const ExpenseModal = ({ isOpen, onClose, onSave, expense, farms }) => {
                 error={errors.farmId}
               >
                 <option value="">Select a farm</option>
-                {farms.map((farm) => (
+{farms.map((farm) => (
                   <option key={farm.Id} value={farm.Id}>
-                    {farm.name}
+                    {farm.Name}
                   </option>
                 ))}
               </Select>

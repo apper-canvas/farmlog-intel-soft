@@ -36,9 +36,11 @@ const FarmGrid = () => {
       setFarms(farmsData);
 
       // Calculate crop counts per farm
-      const counts = {};
+const counts = {};
       farmsData.forEach(farm => {
-        counts[farm.Id] = cropsData.filter(crop => crop.farmId === farm.Id).length;
+        counts[farm.Id] = cropsData.filter(crop => 
+          crop.farm_id_c?.Id === farm.Id || crop.farm_id_c === farm.Id
+        ).length;
       });
       setCropCounts(counts);
     } catch (err) {
@@ -127,7 +129,7 @@ const FarmGrid = () => {
       {/* Farm Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {farms.map((farm) => (
-          <div
+<div
             key={farm.Id}
             className="card card-hover border border-gray-200"
           >
@@ -137,17 +139,17 @@ const FarmGrid = () => {
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <h3 className="text-lg font-display font-semibold text-gray-900 mb-1">
-                      {farm.name}
+                      {farm.Name}
                     </h3>
                     <p className="text-sm text-gray-600 flex items-center gap-1">
                       <ApperIcon name="MapPin" className="w-4 h-4" />
-                      {farm.location}
+                      {farm.location_c}
                     </p>
                   </div>
                   <div className="ml-4">
                     <div className="text-right">
-                      <div className="text-lg font-bold text-primary">{farm.size}</div>
-                      <div className="text-xs text-gray-500">{farm.unit}</div>
+                      <div className="text-lg font-bold text-primary">{farm.size_c}</div>
+                      <div className="text-xs text-gray-500">{farm.unit_c}</div>
                     </div>
                   </div>
                 </div>

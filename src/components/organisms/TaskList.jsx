@@ -63,18 +63,20 @@ const TaskList = () => {
     let filtered = [...tasks];
 
     if (filters.farm) {
-      filtered = filtered.filter(task => task.farmId === parseInt(filters.farm));
+filtered = filtered.filter(task => 
+        task.farm_id_c?.Id === parseInt(filters.farm) || task.farm_id_c === parseInt(filters.farm)
+      );
     }
 
     if (filters.status) {
       if (filters.status === "completed") {
-        filtered = filtered.filter(task => task.completed);
+        filtered = filtered.filter(task => task.completed_c);
       } else if (filters.status === "pending") {
-        filtered = filtered.filter(task => !task.completed);
+        filtered = filtered.filter(task => !task.completed_c);
       } else if (filters.status === "overdue") {
-        filtered = filtered.filter(task => !task.completed && isOverdue(task.dueDate));
+        filtered = filtered.filter(task => !task.completed_c && isOverdue(task.due_date_c));
       } else if (filters.status === "due-soon") {
-        filtered = filtered.filter(task => !task.completed && isDueSoon(task.dueDate));
+        filtered = filtered.filter(task => !task.completed_c && isDueSoon(task.due_date_c));
       }
     }
 
@@ -83,12 +85,12 @@ const TaskList = () => {
     }
 
     // Sort by due date (overdue first, then upcoming)
-    filtered.sort((a, b) => {
-      if (a.completed && !b.completed) return 1;
-      if (!a.completed && b.completed) return -1;
-      if (isOverdue(a.dueDate) && !isOverdue(b.dueDate)) return -1;
-      if (!isOverdue(a.dueDate) && isOverdue(b.dueDate)) return 1;
-      return new Date(a.dueDate) - new Date(b.dueDate);
+filtered.sort((a, b) => {
+      if (a.completed_c && !b.completed_c) return 1;
+      if (!a.completed_c && b.completed_c) return -1;
+      if (isOverdue(a.due_date_c) && !isOverdue(b.due_date_c)) return -1;
+      if (!isOverdue(a.due_date_c) && isOverdue(b.due_date_c)) return 1;
+      return new Date(a.due_date_c) - new Date(b.due_date_c);
     });
 
     setFilteredTasks(filtered);
@@ -147,21 +149,21 @@ const TaskList = () => {
     }
   };
 
-  const getFarmName = (farmId) => {
+const getFarmName = (farmId) => {
     const farm = farms.find(f => f.Id === farmId);
-    return farm ? farm.name : "Unknown Farm";
+    return farm ? farm.Name : "Unknown Farm";
   };
 
   const getCropName = (cropId) => {
-    if (!cropId) return null;
+if (!cropId) return null;
     const crop = crops.find(c => c.Id === cropId);
-    return crop ? crop.variety : "Unknown Crop";
+    return crop ? crop.variety_c : "Unknown Crop";
   };
 
-  const getTaskStatus = (task) => {
-    if (task.completed) return "completed";
-    if (isOverdue(task.dueDate)) return "overdue";
-    if (isDueSoon(task.dueDate)) return "due-soon";
+const getTaskStatus = (task) => {
+    if (task.completed_c) return "completed";
+    if (isOverdue(task.due_date_c)) return "overdue";
+    if (isDueSoon(task.due_date_c)) return "due-soon";
     return "pending";
   };
 
@@ -192,8 +194,8 @@ const TaskList = () => {
           >
             <option value="">All Farms</option>
             {farms.map((farm) => (
-              <option key={farm.Id} value={farm.Id}>
-                {farm.name}
+<option key={farm.Id} value={farm.Id}>
+                {farm.Name}
               </option>
             ))}
           </Select>
@@ -250,23 +252,23 @@ const TaskList = () => {
         <div className="space-y-4">
           {filteredTasks.map((task) => (
             <div
-              key={task.Id}
+key={task.Id}
               className={`card border border-gray-200 ${
-                task.completed ? "bg-gray-50" : ""
+                task.completed_c ? "bg-gray-50" : ""
               }`}
             >
               <div className="flex items-start gap-4">
                 {/* Checkbox */}
                 <button
-                  onClick={() => !task.completed && handleCompleteTask(task.Id)}
+                  onClick={() => !task.completed_c && handleCompleteTask(task.Id)}
                   className={`mt-1 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
-                    task.completed
+                    task.completed_c
                       ? "bg-success border-success text-white"
                       : "border-gray-300 hover:border-primary hover:bg-primary/5"
                   }`}
-                  disabled={task.completed}
+                  disabled={task.completed_c}
                 >
-                  {task.completed && <ApperIcon name="Check" className="w-4 h-4" />}
+                  {task.completed_c && <ApperIcon name="Check" className="w-4 h-4" />}
                 </button>
 
                 {/* Task Content */}
@@ -274,21 +276,21 @@ const TaskList = () => {
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1">
                       <h3 className={`text-lg font-display font-semibold mb-1 ${
-                        task.completed ? "text-gray-500 line-through" : "text-gray-900"
+                        task.completed_c ? "text-gray-500 line-through" : "text-gray-900"
                       }`}>
-                        {task.title}
+                        {task.title_c}
                       </h3>
-                      {task.description && (
+                      {task.description_c && (
                         <p className={`text-sm mb-2 ${
-                          task.completed ? "text-gray-400" : "text-gray-600"
+                          task.completed_c ? "text-gray-400" : "text-gray-600"
                         }`}>
-                          {task.description}
+                          {task.description_c}
                         </p>
                       )}
                     </div>
                     <div className="flex items-center gap-2 ml-4">
                       <StatusBadge status={getTaskStatus(task)} type="task" />
-                      <PriorityBadge priority={task.priority} />
+                      <PriorityBadge priority={task.priority_c} />
                     </div>
                   </div>
 
@@ -296,16 +298,16 @@ const TaskList = () => {
                   <div className="flex items-center gap-6 text-sm text-gray-600">
                     <div className="flex items-center gap-1">
                       <ApperIcon name="Calendar" className="w-4 h-4" />
-                      {formatRelativeDate(task.dueDate)}
+                      {formatRelativeDate(task.due_date_c)}
                     </div>
                     <div className="flex items-center gap-1">
                       <ApperIcon name="MapPin" className="w-4 h-4" />
-                      {getFarmName(task.farmId)}
+                      {getFarmName(task.farm_id_c?.Id || task.farm_id_c)}
                     </div>
-                    {task.cropId && (
+                    {task.crop_id_c && (
                       <div className="flex items-center gap-1">
                         <ApperIcon name="Sprout" className="w-4 h-4" />
-                        {getCropName(task.cropId)}
+                        {getCropName(task.crop_id_c?.Id || task.crop_id_c)}
                       </div>
                     )}
                   </div>

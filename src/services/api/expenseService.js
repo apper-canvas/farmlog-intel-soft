@@ -1,16 +1,9 @@
-import expensesData from "@/services/mockData/expenses.json";
+import { getApperClient } from "@/services/apperClient";
+import { toast } from "react-toastify";
 
 class ExpenseService {
   constructor() {
-    this.storageKey = "farmlog_expenses";
-    this.initializeData();
-  }
-
-  initializeData() {
-    const stored = localStorage.getItem(this.storageKey);
-    if (!stored) {
-      localStorage.setItem(this.storageKey, JSON.stringify(expensesData));
-    }
+    this.tableName = "expense_c";
   }
 
   async delay() {
@@ -19,77 +12,307 @@ class ExpenseService {
 
   async getAll() {
     await this.delay();
-    const data = localStorage.getItem(this.storageKey);
-    return data ? JSON.parse(data) : [];
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        console.error("ApperClient not initialized");
+        return [];
+      }
+
+      const params = {
+        fields: [
+          {"field": {"Name": "Name"}},
+          {"field": {"Name": "amount_c"}},
+          {"field": {"Name": "category_c"}},
+          {"field": {"Name": "date_c"}},
+          {"field": {"Name": "farm_id_c"}},
+          {"field": {"Name": "notes_c"}}
+        ]
+      };
+
+      const response = await apperClient.fetchRecords(this.tableName, params);
+
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return [];
+      }
+
+      if (!response.data || response.data.length === 0) {
+        return [];
+      }
+
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching expenses:", error?.response?.data?.message || error);
+      return [];
+    }
   }
 
   async getById(id) {
     await this.delay();
-    const expenses = await this.getAll();
-    return expenses.find(expense => expense.Id === id) || null;
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        console.error("ApperClient not initialized");
+        return null;
+      }
+
+      const params = {
+        fields: [
+          {"field": {"Name": "Name"}},
+          {"field": {"Name": "amount_c"}},
+          {"field": {"Name": "category_c"}},
+          {"field": {"Name": "date_c"}},
+          {"field": {"Name": "farm_id_c"}},
+          {"field": {"Name": "notes_c"}}
+        ]
+      };
+
+      const response = await apperClient.getRecordById(this.tableName, id, params);
+
+      if (!response?.data) {
+        return null;
+      }
+
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching expense ${id}:`, error?.response?.data?.message || error);
+      return null;
+    }
   }
 
   async getByFarmId(farmId) {
     await this.delay();
-    const expenses = await this.getAll();
-    return expenses.filter(expense => expense.farmId === farmId);
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        console.error("ApperClient not initialized");
+        return [];
+      }
+
+      const params = {
+        fields: [
+          {"field": {"Name": "Name"}},
+          {"field": {"Name": "amount_c"}},
+          {"field": {"Name": "category_c"}},
+          {"field": {"Name": "date_c"}},
+          {"field": {"Name": "farm_id_c"}},
+          {"field": {"Name": "notes_c"}}
+        ],
+        where: [{
+          FieldName: "farm_id_c",
+          Operator: "EqualTo",
+          Values: [parseInt(farmId)],
+          Include: true
+        }]
+      };
+
+      const response = await apperClient.fetchRecords(this.tableName, params);
+
+      if (!response.success) {
+        console.error(response.message);
+        return [];
+      }
+
+      return response.data || [];
+    } catch (error) {
+      console.error("Error fetching expenses by farm:", error?.response?.data?.message || error);
+      return [];
+    }
   }
 
   async getMonthlyTotal(month = new Date().getMonth() + 1, year = new Date().getFullYear()) {
     await this.delay();
-    const expenses = await this.getAll();
-    return expenses
-      .filter(expense => {
-        const expenseDate = new Date(expense.date);
-        return expenseDate.getMonth() + 1 === month && expenseDate.getFullYear() === year;
-      })
-      .reduce((total, expense) => total + expense.amount, 0);
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        console.error("ApperClient not initialized");
+        return 0;
+      }
+
+      // Create date range for the month
+      const startDate = `${year}-${String(month).padStart(2, '0')}-01`;
+      const endDate = new Date(year, month, 0).toISOString().slice(0, 10);
+
+      const params = {
+        fields: [
+          {"field": {"Name": "amount_c"}}
+        ],
+        where: [
+          {
+            FieldName: "date_c",
+            Operator: "GreaterThanOrEqualTo",
+            Values: [startDate],
+            Include: true
+          },
+          {
+            FieldName: "date_c",
+            Operator: "LessThanOrEqualTo",
+            Values: [endDate],
+            Include: true
+          }
+        ]
+      };
+
+      const response = await apperClient.fetchRecords(this.tableName, params);
+
+      if (!response.success) {
+        console.error(response.message);
+        return 0;
+      }
+
+      const expenses = response.data || [];
+      return expenses.reduce((total, expense) => total + (expense.amount_c || 0), 0);
+    } catch (error) {
+      console.error("Error fetching monthly expenses:", error?.response?.data?.message || error);
+      return 0;
+    }
   }
 
   async create(expenseData) {
     await this.delay();
-    const expenses = await this.getAll();
-    const maxId = expenses.length > 0 ? Math.max(...expenses.map(e => e.Id)) : 0;
-    
-    const newExpense = {
-      Id: maxId + 1,
-      ...expenseData,
-      createdAt: new Date().toISOString()
-    };
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        console.error("ApperClient not initialized");
+        throw new Error("ApperClient not initialized");
+      }
 
-    const updatedExpenses = [...expenses, newExpense];
-    localStorage.setItem(this.storageKey, JSON.stringify(updatedExpenses));
-    return newExpense;
+      const params = {
+        records: [{
+          amount_c: expenseData.amount,
+          category_c: expenseData.category,
+          date_c: expenseData.date,
+          farm_id_c: parseInt(expenseData.farmId),
+          notes_c: expenseData.notes || ""
+        }]
+      };
+
+      const response = await apperClient.createRecord(this.tableName, params);
+
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        throw new Error(response.message);
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+
+        if (failed.length > 0) {
+          console.error(`Failed to create ${failed.length} expenses:`, failed);
+          failed.forEach(record => {
+            record.errors?.forEach(error => toast.error(`${error.fieldLabel}: ${error}`));
+            if (record.message) toast.error(record.message);
+          });
+        }
+
+        if (successful.length > 0) {
+          return successful[0].data;
+        }
+      }
+
+      throw new Error("No successful records created");
+    } catch (error) {
+      console.error("Error creating expense:", error?.response?.data?.message || error);
+      throw error;
+    }
   }
 
   async update(id, expenseData) {
     await this.delay();
-    const expenses = await this.getAll();
-    const expenseIndex = expenses.findIndex(expense => expense.Id === id);
-    
-    if (expenseIndex === -1) {
-      throw new Error("Expense not found");
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        console.error("ApperClient not initialized");
+        throw new Error("ApperClient not initialized");
+      }
+
+      const params = {
+        records: [{
+          Id: id,
+          amount_c: expenseData.amount,
+          category_c: expenseData.category,
+          date_c: expenseData.date,
+          farm_id_c: parseInt(expenseData.farmId),
+          notes_c: expenseData.notes || ""
+        }]
+      };
+
+      const response = await apperClient.updateRecord(this.tableName, params);
+
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        throw new Error(response.message);
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+
+        if (failed.length > 0) {
+          console.error(`Failed to update ${failed.length} expenses:`, failed);
+          failed.forEach(record => {
+            record.errors?.forEach(error => toast.error(`${error.fieldLabel}: ${error}`));
+            if (record.message) toast.error(record.message);
+          });
+        }
+
+        if (successful.length > 0) {
+          return successful[0].data;
+        }
+      }
+
+      throw new Error("No successful records updated");
+    } catch (error) {
+      console.error("Error updating expense:", error?.response?.data?.message || error);
+      throw error;
     }
-
-    const updatedExpense = {
-      ...expenses[expenseIndex],
-      ...expenseData,
-      Id: id
-    };
-
-    const updatedExpenses = [...expenses];
-    updatedExpenses[expenseIndex] = updatedExpense;
-    
-    localStorage.setItem(this.storageKey, JSON.stringify(updatedExpenses));
-    return updatedExpense;
   }
 
   async delete(id) {
     await this.delay();
-    const expenses = await this.getAll();
-    const updatedExpenses = expenses.filter(expense => expense.Id !== id);
-    localStorage.setItem(this.storageKey, JSON.stringify(updatedExpenses));
-    return true;
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        console.error("ApperClient not initialized");
+        throw new Error("ApperClient not initialized");
+      }
+
+      const params = {
+        RecordIds: [id]
+      };
+
+      const response = await apperClient.deleteRecord(this.tableName, params);
+
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        throw new Error(response.message);
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+
+        if (failed.length > 0) {
+          console.error(`Failed to delete ${failed.length} expenses:`, failed);
+          failed.forEach(record => {
+            if (record.message) toast.error(record.message);
+          });
+        }
+
+        return successful.length > 0;
+      }
+
+      return true;
+    } catch (error) {
+      console.error("Error deleting expense:", error?.response?.data?.message || error);
+      throw error;
+    }
   }
 }
 

@@ -26,13 +26,13 @@ const CropModal = ({ isOpen, onClose, onSave, crop, farms }) => {
 
   useEffect(() => {
     if (crop) {
-      setFormData({
-        farmId: crop.farmId?.toString() || "",
-        variety: crop.variety || "",
-        plantingDate: crop.plantingDate || "",
-        expectedHarvest: crop.expectedHarvest || "",
-        field: crop.field || "",
-        notes: crop.notes || ""
+setFormData({
+        farmId: crop.farm_id_c?.Id?.toString() || crop.farm_id_c?.toString() || "",
+        variety: crop.variety_c || "",
+        plantingDate: crop.planting_date_c || "",
+        expectedHarvest: crop.expected_harvest_c || "",
+        field: crop.field_c || "",
+        notes: crop.notes_c || ""
       });
     } else {
       setFormData({
@@ -145,9 +145,9 @@ const CropModal = ({ isOpen, onClose, onSave, crop, farms }) => {
                 error={errors.farmId}
               >
                 <option value="">Select a farm</option>
-                {farms.map((farm) => (
+{farms.map((farm) => (
                   <option key={farm.Id} value={farm.Id}>
-                    {farm.name}
+                    {farm.Name}
                   </option>
                 ))}
               </Select>

@@ -59,23 +59,25 @@ const ExpenseTracker = () => {
   const applyFilters = () => {
     let filtered = [...expenses];
 
-    if (filters.farm) {
-      filtered = filtered.filter(expense => expense.farmId === parseInt(filters.farm));
+if (filters.farm) {
+      filtered = filtered.filter(expense => 
+        expense.farm_id_c?.Id === parseInt(filters.farm) || expense.farm_id_c === parseInt(filters.farm)
+      );
     }
 
     if (filters.category) {
-      filtered = filtered.filter(expense => expense.category === filters.category);
+      filtered = filtered.filter(expense => expense.category_c === filters.category);
     }
 
     if (filters.month) {
       filtered = filtered.filter(expense => {
-        const expenseMonth = new Date(expense.date).toISOString().slice(0, 7);
+        const expenseMonth = new Date(expense.date_c).toISOString().slice(0, 7);
         return expenseMonth === filters.month;
       });
     }
 
     // Sort by date (newest first)
-    filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+filtered.sort((a, b) => new Date(b.date_c) - new Date(a.date_c));
 
     setFilteredExpenses(filtered);
   };
@@ -122,9 +124,9 @@ const ExpenseTracker = () => {
     }
   };
 
-  const getFarmName = (farmId) => {
+const getFarmName = (farmId) => {
     const farm = farms.find(f => f.Id === farmId);
-    return farm ? farm.name : "Unknown Farm";
+    return farm ? farm.Name : "Unknown Farm";
   };
 
   const getCategoryIcon = (category) => {
@@ -140,13 +142,13 @@ const ExpenseTracker = () => {
   };
 
   const getTotalExpenses = () => {
-    return filteredExpenses.reduce((total, expense) => total + expense.amount, 0);
+return filteredExpenses.reduce((total, expense) => total + expense.amount_c, 0);
   };
 
   const getCategoryTotals = () => {
     const totals = {};
-    filteredExpenses.forEach(expense => {
-      totals[expense.category] = (totals[expense.category] || 0) + expense.amount;
+filteredExpenses.forEach(expense => {
+      totals[expense.category_c] = (totals[expense.category_c] || 0) + expense.amount_c;
     });
     return totals;
   };
@@ -231,9 +233,9 @@ const ExpenseTracker = () => {
             onChange={(e) => setFilters(prev => ({ ...prev, farm: e.target.value }))}
           >
             <option value="">All Farms</option>
-            {farms.map((farm) => (
+{farms.map((farm) => (
               <option key={farm.Id} value={farm.Id}>
-                {farm.name}
+                {farm.Name}
               </option>
             ))}
           </Select>
@@ -286,38 +288,38 @@ const ExpenseTracker = () => {
       ) : (
         <div className="card">
           <div className="space-y-4">
-            {filteredExpenses.map((expense) => (
+{filteredExpenses.map((expense) => (
               <div
                 key={expense.Id}
                 className="flex items-center gap-4 p-4 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors"
               >
                 {/* Category Icon */}
                 <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                  <ApperIcon name={getCategoryIcon(expense.category)} className="w-5 h-5 text-primary" />
+                  <ApperIcon name={getCategoryIcon(expense.category_c)} className="w-5 h-5 text-primary" />
                 </div>
 
                 {/* Expense Details */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h4 className="font-medium text-gray-900">{expense.category}</h4>
+                      <h4 className="font-medium text-gray-900">{expense.category_c}</h4>
                       <div className="flex items-center gap-4 text-sm text-gray-600 mt-1">
-                        <span>{formatDate(expense.date)}</span>
+                        <span>{formatDate(expense.date_c)}</span>
                         <span className="flex items-center gap-1">
                           <ApperIcon name="MapPin" className="w-3.5 h-3.5" />
-                          {getFarmName(expense.farmId)}
+                          {getFarmName(expense.farm_id_c?.Id || expense.farm_id_c)}
                         </span>
                       </div>
                     </div>
                     <div className="text-right">
                       <div className="text-lg font-semibold text-gray-900">
-                        ${expense.amount.toLocaleString()}
+                        ${expense.amount_c.toLocaleString()}
                       </div>
                     </div>
                   </div>
                   
-                  {expense.notes && (
-                    <p className="text-sm text-gray-600 mt-2">{expense.notes}</p>
+                  {expense.notes_c && (
+                    <p className="text-sm text-gray-600 mt-2">{expense.notes_c}</p>
                   )}
                 </div>
 

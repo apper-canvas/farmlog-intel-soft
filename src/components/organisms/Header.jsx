@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import farmService from "@/services/api/farmService";
 import ApperIcon from "@/components/ApperIcon";
 import OfflineIndicator from "@/components/molecules/OfflineIndicator";
-import farmService from "@/services/api/farmService";
+import LogoutButton from "@/components/atoms/LogoutButton";
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -15,7 +16,7 @@ const Header = () => {
   }, []);
 
   const loadFarms = async () => {
-    try {
+try {
       const data = await farmService.getAll();
       setFarms(data);
     } catch (error) {
@@ -81,9 +82,9 @@ const Header = () => {
                   className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
                 >
                   <option value="">All Farms</option>
-                  {farms.map((farm) => (
+{farms.map((farm) => (
                     <option key={farm.Id} value={farm.Id}>
-                      {farm.name}
+                      {farm.Name}
                     </option>
                   ))}
                 </select>
@@ -137,12 +138,17 @@ const Header = () => {
                   </button>
                 </div>
 
-                {/* Navigation */}
+{/* Navigation */}
                 <nav className="flex-1 p-4 space-y-2">
                   {navigation.map((item) => (
                     <NavItem key={item.href} item={item} mobile />
                   ))}
                 </nav>
+
+{/* Logout Button */}
+                <div className="p-4 border-t">
+                  <LogoutButton />
+                </div>
 
                 {/* Status */}
                 <div className="p-4 border-t border-gray-200">

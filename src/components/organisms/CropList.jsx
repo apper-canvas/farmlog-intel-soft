@@ -66,7 +66,20 @@ const CropList = () => {
   const applyFilters = () => {
     let filtered = [...crops];
 
-    if (filters.farm) {
+if (filters.farm) {
+      filtered = filtered.filter(crop => 
+        crop.farm_id_c?.Id === parseInt(filters.farm) || crop.farm_id_c === parseInt(filters.farm)
+      );
+    }
+
+    if (filters.status) {
+      filtered = filtered.filter(crop => crop.status_c === filters.status);
+    }
+
+    if (filters.variety) {
+      filtered = filtered.filter(crop => 
+        crop.variety_c.toLowerCase().includes(filters.variety.toLowerCase())
+      );
       filtered = filtered.filter(crop => crop.farmId === parseInt(filters.farm));
     }
 
@@ -119,9 +132,9 @@ const CropList = () => {
     }
   };
 
-  const getFarmName = (farmId) => {
+const getFarmName = (farmId) => {
     const farm = farms.find(f => f.Id === farmId);
-    return farm ? farm.name : "Unknown Farm";
+    return farm ? farm.Name : "Unknown Farm";
   };
 
   if (loading) return <Loading text="Loading crops..." />;
@@ -151,8 +164,8 @@ const CropList = () => {
           >
             <option value="">All Farms</option>
             {farms.map((farm) => (
-              <option key={farm.Id} value={farm.Id}>
-                {farm.name}
+<option key={farm.Id} value={farm.Id}>
+                {farm.Name}
               </option>
             ))}
           </Select>
@@ -196,7 +209,7 @@ const CropList = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredCrops.map((crop) => (
-            <div
+<div
               key={crop.Id}
               className="card card-hover border border-gray-200"
             >
@@ -205,14 +218,14 @@ const CropList = () => {
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <h3 className="text-lg font-display font-semibold text-gray-900 mb-1">
-                      {crop.variety}
+                      {crop.variety_c}
                     </h3>
                     <p className="text-sm text-gray-600 flex items-center gap-1">
                       <ApperIcon name="MapPin" className="w-4 h-4" />
-                      {getFarmName(crop.farmId)}
+                      {getFarmName(crop.farm_id_c?.Id || crop.farm_id_c)}
                     </p>
                   </div>
-                  <StatusBadge status={crop.status} type="crop" />
+                  <StatusBadge status={crop.status_c} type="crop" />
                 </div>
 
                 {/* Crop Details */}
@@ -220,29 +233,29 @@ const CropList = () => {
                   <div className="flex items-center gap-2">
                     <ApperIcon name="Calendar" className="w-4 h-4 text-gray-400" />
                     <span className="text-sm text-gray-600">
-                      Planted: {formatDate(crop.plantingDate)}
+                      Planted: {formatDate(crop.planting_date_c)}
                     </span>
                   </div>
 
                   <div className="flex items-center gap-2">
                     <ApperIcon name="CalendarDays" className="w-4 h-4 text-gray-400" />
                     <span className="text-sm text-gray-600">
-                      Harvest: {formatDate(crop.expectedHarvest)}
+                      Harvest: {formatDate(crop.expected_harvest_c)}
                     </span>
                   </div>
 
                   <div className="flex items-center gap-2">
                     <ApperIcon name="Square" className="w-4 h-4 text-gray-400" />
                     <span className="text-sm text-gray-600">
-                      Field: {crop.field}
+                      Field: {crop.field_c}
                     </span>
                   </div>
 
-                  {crop.notes && (
+                  {crop.notes_c && (
                     <div className="flex items-start gap-2">
                       <ApperIcon name="FileText" className="w-4 h-4 text-gray-400 mt-0.5" />
                       <span className="text-sm text-gray-600 line-clamp-2">
-                        {crop.notes}
+                        {crop.notes_c}
                       </span>
                     </div>
                   )}

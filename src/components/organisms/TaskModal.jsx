@@ -19,14 +19,14 @@ const TaskModal = ({ isOpen, onClose, onSave, task, farms, crops }) => {
   const [filteredCrops, setFilteredCrops] = useState([]);
 
   useEffect(() => {
-    if (task) {
+if (task) {
       setFormData({
-        title: task.title || "",
-        description: task.description || "",
-        dueDate: task.dueDate || "",
-        farmId: task.farmId?.toString() || "",
-        cropId: task.cropId?.toString() || "",
-        priority: task.priority || "medium"
+        title: task.title_c || "",
+        description: task.description_c || "",
+        dueDate: task.due_date_c || "",
+        farmId: task.farm_id_c?.Id?.toString() || task.farm_id_c?.toString() || "",
+        cropId: task.crop_id_c?.Id?.toString() || task.crop_id_c?.toString() || "",
+        priority: task.priority_c || "medium"
       });
     } else {
       setFormData({
@@ -42,8 +42,10 @@ const TaskModal = ({ isOpen, onClose, onSave, task, farms, crops }) => {
   }, [task, isOpen]);
 
   useEffect(() => {
-    if (formData.farmId && crops) {
-      const filtered = crops.filter(crop => crop.farmId === parseInt(formData.farmId));
+if (formData.farmId && crops) {
+      const filtered = crops.filter(crop => 
+        crop.farm_id_c?.Id === parseInt(formData.farmId) || crop.farm_id_c === parseInt(formData.farmId)
+      );
       setFilteredCrops(filtered);
     } else {
       setFilteredCrops([]);
@@ -183,9 +185,9 @@ const TaskModal = ({ isOpen, onClose, onSave, task, farms, crops }) => {
                 error={errors.farmId}
               >
                 <option value="">Select a farm</option>
-                {farms.map((farm) => (
+{farms.map((farm) => (
                   <option key={farm.Id} value={farm.Id}>
-                    {farm.name}
+                    {farm.Name}
                   </option>
                 ))}
               </Select>
@@ -197,9 +199,9 @@ const TaskModal = ({ isOpen, onClose, onSave, task, farms, crops }) => {
                 disabled={!formData.farmId}
               >
                 <option value="">No specific crop</option>
-                {filteredCrops.map((crop) => (
+{filteredCrops.map((crop) => (
                   <option key={crop.Id} value={crop.Id}>
-                    {crop.variety} ({crop.field})
+                    {crop.variety_c} ({crop.field_c})
                   </option>
                 ))}
               </Select>
